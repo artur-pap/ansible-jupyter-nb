@@ -1,0 +1,17 @@
+---
+# file: roles/jupyter/vars/main.yml
+jupyter_pkgs:
+  - python34
+  - python34-setuptools
+  - python34-devel
+  - python
+  - python-setuptools
+  - python-devel
+  - sudo
+  - npm
+  - git
+#  - nodejs-legacy
+
+jupyterpw: Jupyter77&&
+
+nossl: true

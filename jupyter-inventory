@@ -19,3 +19,6 @@ eprupap001
 
 [webservers]
 eprupap002
+
+[jupyter]
+eprupap003

@@ -7,24 +7,24 @@
    - libselinux-python
    - libsemanage-python
 
-- name: install ntp
-  yum: name=ntp state=present
-  tags: ntp
-  register: ntp_installed
-
-- name: print ntp_installed status
-  debug:
-    msg: "ntp service installation result: {{ ntp_installed }}"
-
-- name: configure ntp file
-  template: src=ntp.conf.j2 dest=/etc/ntp.conf
-  tags: ntp
-  notify: restart ntp
-
-- name: start the ntp service
-  service: name=ntpd state=started enabled=yes
-  tags: ntp
-  when: ntp_installed
+#- name: install ntp
+#  yum: name=ntp state=present
+#  tags: ntp
+#  register: ntp_installed
+#
+#- name: print ntp_installed status
+#  debug:
+#    msg: "ntp service installation result: {{ ntp_installed }}"
+#
+#- name: configure ntp file
+#  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+#  tags: ntp
+#  notify: restart ntp
+#
+#- name: start the ntp service
+#  service: name=ntpd state=started enabled=yes
+#  tags: ntp
+#  when: ntp_installed
 
 ## work around RHEL 7, for now
 #- name: insert iptables template
