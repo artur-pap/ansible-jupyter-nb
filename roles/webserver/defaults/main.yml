@@ -1,0 +1,5 @@
+---
+# defaults file for ansible-role-httpd
+var_log_httpd_permission: "0755"
+
+httpd_service_on: yes

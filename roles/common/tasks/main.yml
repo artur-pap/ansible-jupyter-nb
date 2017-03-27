@@ -1,0 +1,38 @@
+---
+# This role contains common plays that will run on all nodes.
+
+- name: install python bindings for SE Linux
+  yum: name={{ item }} state=present
+  with_items:
+   - libselinux-python
+   - libsemanage-python
+
+- name: install ntp
+  yum: name=ntp state=present
+  tags: ntp
+  register: ntp_installed
+
+- name: print ntp_installed status
+  debug:
+    msg: "ntp service installation result: {{ ntp_installed }}"
+
+- name: configure ntp file
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  tags: ntp
+  notify: restart ntp
+
+- name: start the ntp service
+  service: name=ntpd state=started enabled=yes
+  tags: ntp
+  when: ntp_installed
+
+## work around RHEL 7, for now
+#- name: insert iptables template
+#  template: src=iptables.j2 dest=/etc/sysconfig/iptables
+#  when: ansible_distribution_major_version != '7'
+#  notify: restart iptables
+
+- name: test to see if selinux is running
+  command: getenforce
+  register: sestatus
+  changed_when: false

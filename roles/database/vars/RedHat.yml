@@ -1,0 +1,16 @@
+---
+#env:
+# RUNLEVEL: 1
+
+db_pkgs:
+  - mariadb-server
+  - MySQL-python
+#  - mariadb
+#  - mariadb-server
+#  - mariadb-libs
+#  - MySQL-python
+#  - perl-DBD-MySQL
+
+#mysql_service: mysqld
+
+mysql_root_password: "1"

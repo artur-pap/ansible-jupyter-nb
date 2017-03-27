@@ -1,0 +1,76 @@
+---
+- name: Add the OS specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Install the mysql packages in Redhat derivatives
+  yum: name={{ item }} state=installed
+  with_items: "{{ db_pkgs }}"
+  when: ansible_os_family == 'RedHat'
+
+- name: Create MariaDB log file
+  file: path=/var/log/mysqld.log state=touch owner=mysql group=mysql mode=0775
+
+- name: Create MariaDB PID directory
+  file: path=/var/run/mysqld state=directory owner=mysql group=mysql mode=0775
+
+- name: ANSIBLE_USER IS
+  debug:
+    msg: "{{ ansible_user }}"
+
+- name: Add configuration
+  template: src="my.cnf.{{ ansible_os_family }}.j2" dest="{{ mysql_conf_dir[ansible_os_family] }}/my.cnf" owner=root group=root mode=0644
+  notify: restart mysql
+  register: conf_result
+
+- name: Add .my.cnf
+  template: src=my.cnf.j2 dest="/root/.my.cnf"
+
+- name: Start MariaDB Service
+  service: name=mariadb state=started enabled=yes
+  register: service_state
+
+- name: Set root Password
+  mysql_user:
+    host: "{{ item }}"
+    login_user: root
+    login_password: ""
+    name: root
+    password: "{{ mysql_root_password }}"
+    state: present
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+  when: service_state
+
+- name: conf_result_conf_result_conf_result
+  debug:
+    msg: "{{ conf_result }}"
+
+#- name: Reload privilege tables
+#  command: 'mysql -ne "{{ item }}"'
+#  with_items:
+#    - FLUSH PRIVILEGES
+#  changed_when: False
+
+#- name: Start firewalld
+#  service: name=firewalld state=started enabled=yes
+#
+#- name: insert firewalld rule
+#  firewalld: port={{ mysql_port }}/tcp permanent=true state=enabled immediate=yes
+
+- name: Create Application Database
+  mysql_db:
+    name: "{{ dbname }}"
+    state: present
+
+- name: Create Application DB User
+  mysql_user:
+    host: "{{ item }}"
+    name: "{{ dbuser }}"
+    password: "{{ upassword }}"
+    priv: "*.*:ALL"
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1

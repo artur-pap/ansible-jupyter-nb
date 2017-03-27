@@ -1,0 +1,18 @@
+---
+# tasks file for ansible-role-httpd
+
+- name: install packages
+  yum:
+    name: "httpd"
+    state: present
+
+- name: chmod log dir
+  file:
+    path: /var/log/httpd
+    state: directory
+    mode: "{{ var_log_httpd_permission | default('0755') }}"
+
+- name: chkconfig on
+  service:
+    name: httpd
+    enabled: "{{ httpd_service_on | default('no') }}"

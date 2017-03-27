@@ -1,0 +1,4 @@
+---
+mysql_conf_dir:
+  "RedHat": /etc/my.cnf.d
+  "Debian": /etc/mysql/conf.d

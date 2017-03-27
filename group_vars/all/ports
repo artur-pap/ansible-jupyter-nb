@@ -1,0 +1,3 @@
+---
+httpd_port: 80
+jupyter_web_ui: 8888

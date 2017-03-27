@@ -1,0 +1,6 @@
+*.retry
+**/.idea
+*.iml
+*.swp
+gatling-results/
+.vagrant/*

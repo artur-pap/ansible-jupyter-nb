@@ -1,0 +1,30 @@
+---
+# update yum and repos
+- hosts: all
+  roles:
+    - name: yum
+      tags: [yum]
+
+- hosts: all
+  roles:
+    - name: common
+      tags: [common]
+
+# Configure and deploy database servers.
+- hosts: dbservers
+  roles:
+    - name: database
+      tags: [db, mysql]
+
+# Configure and deploy the web servers. Note that we include two roles here,
+# the 'base-apache' role which simply sets up Apache, and 'web' which includes
+# our example web application.
+- hosts: webservers
+  roles:
+    - name: webserver
+      tags: [webserver, httpd]
+
+- hosts: eprupap003
+  roles:
+    - name: jupyter
+      tags: [jupyter]

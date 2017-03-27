@@ -1,0 +1,6 @@
+---
+ansible_user: ansible-user
+ansible_ssh_pass: 1
+
+ansible_become: True
+ansible_become_method: sudo
